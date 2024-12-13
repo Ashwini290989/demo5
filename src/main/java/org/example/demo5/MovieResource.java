@@ -18,51 +18,72 @@ public class MovieResource {
     private MovieRepository movieRepository;
     //variable holds instance of movie repository provided via Inject.
 
-    @GET // maps this method to the HTTP GET request, when client sent GET request to movies. method execute
-    @Produces(MediaType.APPLICATION_JSON) // format of the response
-    public Response getAllMovies() {  // method to get all movies
-        List<Movie> movies = movieRepository.getAllMovies(); //used to hold multiple movies. calling the method from MR
-        return Response.ok(movies).build(); //creating response, finalizing the response , and prepare it to send to the client.
+    /**
+     * GET method to get all list of movies present in db
+     * call getAllMovies method from MovieRepository
+     * produces response in json format
+     * @return response ok if all movies get display
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllMovies() {  // getAllMovies method starts
+        List<Movie> movies = movieRepository.getAllMovies();
+        return Response.ok(movies).build();
 
 
     } // get all movies method ends
 
     /**
+     * GET method to get movie by specific ID
+     * consumes and produces response in json format
      * @param id search for specific id
-     * consumes  and produces response in json format
-     * @return
+     *
+     * @return if movie found with id ,return response code ok,else return response status NOT FOUND.
      */
     @GET
-    @Path("/{id}") // this method will handle request to Movies/id
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMovieById(@PathParam("id") Long id) { //Binds the dynamic {id} part of the URL to the id parameter in the method.
+    public Response getMovieById(@PathParam("id") Long id) { // method starts
         Movie movieid = movieRepository.getMovieById(id);
-        if (movieid != null) { // if movie found creates response with ok.
+        if (movieid != null) {
             return Response.ok(movieid).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
 
-    }
+    }// method ends
 
 
-    @POST // creating new movies
-    @Consumes(MediaType.APPLICATION_JSON)// method accepts JSON format
-    @Produces({MediaType.TEXT_PLAIN}) // response will be in text format
-    public Response CreateMovie(Movie movie) {
-        movieRepository.CreateMovie(movie);// call the create movie method and saves the movie to the database
-        return Response.status(Response.Status.CREATED) // 201,new response created
-                .entity("CreatedMovie") //response in plain text format
-                .build(); // finalize the response
+    /**
+     * POST method to add new movies
+     * consumes response in json , produces in text format
+     * calls createmovie method through movieRepository
+     * @param movie is passed
+     * @return response code ok if movie gets created
+     */
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response CreateMovie(Movie movie) { // method starts
+        movieRepository.CreateMovie(movie);
+        return Response.status(Response.Status.CREATED)
+                .entity("CreatedMovie")
+                .build();
 
-    }
+    } // method ends
 
-    @PUT // update movie
-    @Path("/{id}") // path,ID of the movie which is to be updated
+    /**
+     * PUT method to update the record for movie.
+     * @param id search for specific id to update the movie
+     * if id found which is to be updated, set new values for attributes,
+     * @return response code ok with movie updated, else movie NOT FOUND
+     */
+    @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMovie(@PathParam("id") Long id,Movie updatedMovie) {
-        Movie existingmovie = movieRepository.getMovieById(id);// updates movie data
+    public Response updateMovie(@PathParam("id") Long id,Movie updatedMovie) { // method starts
+        Movie existingmovie = movieRepository.getMovieById(id);
         if (existingmovie == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -75,19 +96,25 @@ public class MovieResource {
             return Response.ok("Movie updated successfully").build();
 
 
-    }
+    }// method ends
 
-    @DELETE // remove a movie
+    /**
+     * Delete method to delete movie by specific id.
+     * call the getMOvieById method through movie respository class
+     * @param id search for specific id , which is to be delected
+     * @return if id not found in db , return response code NOT FOUND,else movie found by id,response code ok.
+     */
+    @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteMovie(@PathParam("id") Long id) {
+    public Response deleteMovie(@PathParam("id") Long id) { // method starts
         Movie deleteMovie = movieRepository.getMovieById(id);
         if (deleteMovie == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Movie not found").build();
         }
         movieRepository.deleteMovieById(id);
             return Response.ok("Movie deleted successfully").build();
-        }
+        } // method ends
 
 
 
