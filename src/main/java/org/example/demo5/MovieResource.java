@@ -27,6 +27,11 @@ public class MovieResource {
 
     } // get all movies method ends
 
+    /**
+     * @param id search for specific id
+     * consumes  and produces response in json format
+     * @return
+     */
     @GET
     @Path("/{id}") // this method will handle request to Movies/id
     @Consumes(MediaType.APPLICATION_JSON)
