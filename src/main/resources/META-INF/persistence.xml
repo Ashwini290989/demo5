@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="default" transaction-type="JTA">
+        <jta-data-source>jdbc/__default</jta-data-source>
+        <!--persistence-unit = a group of setting working with database.
+        name= default
+        transaction-type=JTA= application will handle db transaction (CRUD) using JTA
+        <jta-data-source>jdbc/__default</jta-data-source>= specify connection to the db.
+        jdbc/__default= name of the db connection -->
+
+
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>
+
+
+        <!--   The property element is used to customize the jpa configuration properties.Here we are using eclips
+        link as a jpa provider.
+        1. To create rows and columns in the db.
+        2.operations like CRUD are directly implemented in the database.
+        3.The database with column names is created by using the movie entity class -->
+
