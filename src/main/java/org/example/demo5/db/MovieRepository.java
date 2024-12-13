@@ -28,14 +28,14 @@ public class MovieRepository {  // class starts
 
     public List<Movie> getAllMovies() {
         return em.createNativeQuery("SELECT * FROM Movies", Movie.class).getResultList();
-        //native SQL query(SELECT (*)columns FROM Movies table)
+        //native SQL query(SELECT (*)rows FROM Movies table)
         //instructs JPA to map the results of the query to the movie entity class
         // each row of the results is converted to movie object.
     }
 
     public Movie getMovieById(Long id) {
         return em.find(Movie.class, id);
-        //find method retrives entity from db using its primary key.syntax
+        //find method retrives entity from db using its primary key.syntax for find is given
 
     }
 
